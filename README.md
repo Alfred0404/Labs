@@ -11,6 +11,7 @@ Repository for the Big Data Processing work of group 02.
 
 - `lab2_Thomas_Confolent_Alfred_de_Vulpian`: PySpark word count lab.
 - `lab3_Thomas_Confolent_Alfred_de_Vulpian`: Spark SQL and DataFrames lab.
+- `lab4_Thomas_Confolent_Alfred_de_Vulpian`: Kafka book-streaming lab.
 - `git_cli_workflow.md`: Git CLI commands used for the prerequisites lab.
 
 ## Git workflow
