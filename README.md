@@ -1,5 +1,21 @@
 # Big Data Processing Labs
 
-- gr-02
-- Thomas Confolent, Thomas-C06
-- Alfred de Vulpian, Alfred0404
+Repository for the Big Data Processing work of group 02.
+
+## Group members
+
+- Thomas Confolent — [Thomas-C06](https://github.com/Thomas-C06)
+- Alfred de Vulpian — [Alfred0404](https://github.com/Alfred0404)
+
+## Repository content
+
+- `lab2_Thomas_Confolent_Alfred_de_Vulpian`: PySpark word count lab.
+- `lab3_Thomas_Confolent_Alfred_de_Vulpian`: Spark SQL and DataFrames lab.
+- `git_cli_workflow.md`: Git CLI commands used for the prerequisites lab.
+
+## Git workflow
+
+The repository uses `main` as the stable branch and `develop` as the integration branch.
+Changes are prepared on feature branches before being reviewed and merged.
+
+Conflict exercise status: base version shared by both feature branches.
