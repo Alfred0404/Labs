@@ -64,6 +64,16 @@ python admin.py
 
 This creates `gutenberg-book-lines` with one partition and a replication factor of one. Running the script again is safe: it reports that the topic already exists.
 
+### Run with VS Code cells
+
+The Python files also contain `# %%` cells. Open the `kafka_book_stream` folder directly in VS Code, select the `.venv` Python interpreter and run the cells in this order:
+
+1. `admin.py`: cells 1, 2 and 3;
+2. `producer.py`: cells 1, 2, 3 and 4;
+3. `consumer.py`: cells 1, 2, 3 and 4.
+
+We run the cells from top to bottom because each part uses variables and functions from the previous part.
+
 ## 5. Send the book
 
 ```bash

@@ -1,5 +1,6 @@
-"""Consume book lines from Kafka, clean them and write them to a text file."""
+"""Receive the book, clean the lines and save a new text file."""
 
+# %% 1 - Imports and configuration
 import argparse
 import os
 from pathlib import Path
@@ -9,13 +10,15 @@ from confluent_kafka import Consumer, KafkaError
 from text_cleaning import clean_line
 
 
-BASE_DIR = Path(__file__).resolve().parent
+# __file__ exists in script mode. Path.cwd() is used in a VS Code cell.
+BASE_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DEFAULT_OUTPUT = BASE_DIR / "output" / "cleaned_book.txt"
 BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 TOPIC = os.getenv("KAFKA_TOPIC", "gutenberg-book-lines")
 END_OF_BOOK = "__END_OF_BOOK__"
 
 
+# %% 2 - Command line options
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -35,11 +38,14 @@ def parse_args() -> argparse.Namespace:
         default=15,
         help="Stop after this many one-second polls without a message.",
     )
-    return parser.parse_args()
+    # parse_known_args also works when we run the file cell by cell in VS Code.
+    return parser.parse_known_args()[0]
 
 
+# %% 3 - Function to receive and clean the book
 def consume_book(output_path: Path, group_id: str, max_idle_polls: int) -> None:
-    """Consume and clean records until the producer's end marker is received."""
+    """Read all messages until we receive the end marker."""
+    # Earliest means we start at the beginning for a new consumer group.
     consumer = Consumer(
         {
             "bootstrap.servers": BOOTSTRAP_SERVERS,
@@ -79,6 +85,7 @@ def consume_book(output_path: Path, group_id: str, max_idle_polls: int) -> None:
                     break
 
                 received += 1
+                # We clean every received line before writing it in the result file.
                 cleaned = clean_line(value)
                 if cleaned:
                     output.write(cleaned + "\n")
@@ -95,6 +102,7 @@ def consume_book(output_path: Path, group_id: str, max_idle_polls: int) -> None:
         print("Warning: stopped after the idle timeout without an end marker.")
 
 
+# %% 4 - Run this cell to create the cleaned file
 if __name__ == "__main__":
     arguments = parse_args()
     consume_book(arguments.output.resolve(), arguments.group_id, arguments.max_idle_polls)

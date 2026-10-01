@@ -1,5 +1,6 @@
-"""Create and display the Kafka topic used by the book-streaming lab."""
+"""Create the Kafka topic for the book."""
 
+# %% 1 - Imports and configuration
 import os
 
 from confluent_kafka import KafkaError, KafkaException
@@ -10,8 +11,10 @@ BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 TOPIC = os.getenv("KAFKA_TOPIC", "gutenberg-book-lines")
 
 
+# %% 2 - Function to create the topic
 def create_topic() -> None:
-    """Create the lab topic if it does not already exist."""
+    """Create our topic and show all topics."""
+    # We connect to Kafka on the local Docker container.
     admin = AdminClient(
         {
             "bootstrap.servers": BOOTSTRAP_SERVERS,
@@ -19,6 +22,7 @@ def create_topic() -> None:
         }
     )
     futures = admin.create_topics(
+        # One partition is enough and it keeps the book lines in order.
         [NewTopic(TOPIC, num_partitions=1, replication_factor=1)]
     )
 
@@ -43,5 +47,6 @@ def create_topic() -> None:
         print(f"- {name}")
 
 
+# %% 3 - Run this cell to create the topic
 if __name__ == "__main__":
     create_topic()

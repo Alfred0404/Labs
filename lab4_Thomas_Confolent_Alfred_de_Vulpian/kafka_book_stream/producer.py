@@ -1,5 +1,6 @@
-"""Send a Project Gutenberg book to Kafka, one record per source line."""
+"""Send the Gutenberg book to Kafka line by line."""
 
+# %% 1 - Imports and configuration
 import argparse
 import os
 import socket
@@ -8,13 +9,15 @@ from pathlib import Path
 from confluent_kafka import Producer
 
 
-BASE_DIR = Path(__file__).resolve().parent
+# __file__ exists in script mode. Path.cwd() is used in a VS Code cell.
+BASE_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DEFAULT_BOOK = BASE_DIR / "data" / "around_the_world_in_80_days.txt"
 BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 TOPIC = os.getenv("KAFKA_TOPIC", "gutenberg-book-lines")
 END_OF_BOOK = "__END_OF_BOOK__"
 
 
+# %% 2 - Command line option
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -23,11 +26,13 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_BOOK,
         help=f"UTF-8 text file to stream (default: {DEFAULT_BOOK})",
     )
-    return parser.parse_args()
+    # parse_known_args also works when we run the file cell by cell in VS Code.
+    return parser.parse_known_args()[0]
 
 
+# %% 3 - Function to send the book
 def send_book(book_path: Path) -> None:
-    """Read *book_path* and send every line to the configured Kafka topic."""
+    """Read the book and send each line in our topic."""
     if not book_path.is_file():
         raise FileNotFoundError(f"Book not found: {book_path}")
 
@@ -51,7 +56,7 @@ def send_book(book_path: Path) -> None:
 
             while True:
                 try:
-                    # A shared key keeps all lines in the same partition and preserves order.
+                    # We use the same key for keeping the correct order of the lines.
                     producer.produce(
                         topic=TOPIC,
                         key=book_path.name,
@@ -82,5 +87,6 @@ def send_book(book_path: Path) -> None:
     print("Sent the end-of-book marker.")
 
 
+# %% 4 - Run this cell to send the book
 if __name__ == "__main__":
     send_book(parse_args().book.resolve())

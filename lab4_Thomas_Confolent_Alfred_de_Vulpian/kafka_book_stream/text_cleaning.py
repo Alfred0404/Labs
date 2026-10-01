@@ -1,5 +1,6 @@
-"""Pure text-cleaning functions used by the Kafka consumer."""
+"""Small text cleaning used by the consumer."""
 
+# %% 1 - Regular expressions
 import re
 
 
@@ -8,8 +9,9 @@ UNWANTED_CHARACTER = re.compile(r"[^\w\s']", flags=re.UNICODE)
 WHITESPACE = re.compile(r"\s+")
 
 
+# %% 2 - Cleaning function
 def clean_line(text: str) -> str:
-    """Lowercase a line and remove HTML, punctuation and extra whitespace."""
+    """Put lowercase and remove HTML, punctuation and extra spaces."""
     text = text.lower()
     text = HTML_TAG.sub(" ", text)
     text = UNWANTED_CHARACTER.sub(" ", text)
