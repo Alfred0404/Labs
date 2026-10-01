@@ -1,0 +1,6 @@
+services:
+  kafka:
+    image: apache/kafka-native:4.1.1
+    container_name: kafka-book-lab
+    ports:
+      - "9092:9092"
