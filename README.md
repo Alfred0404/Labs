@@ -18,4 +18,4 @@ Repository for the Big Data Processing work of group 02.
 The repository uses `main` as the stable branch and `develop` as the integration branch.
 Changes are prepared on feature branches before being reviewed and merged.
 
-Conflict exercise status: Thomas completed the CLI workflow and documented the commands.
+Conflict exercise status: Thomas completed the CLI workflow, and the conflict between both demonstration branches was resolved by combining their changes.
