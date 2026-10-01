@@ -1,0 +1,48 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build and test output
+coverage/
+.nyc_output/
+dist/
+build/
+.cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Package manager caches
+.npm/
+.yarn/
+.pnpm-store/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Python/Jupyter files used by the other labs
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
