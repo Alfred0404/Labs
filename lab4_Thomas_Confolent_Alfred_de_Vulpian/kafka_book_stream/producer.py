@@ -9,7 +9,7 @@ from pathlib import Path
 from confluent_kafka import Producer
 
 
-# __file__ exists in script mode. Path.cwd() is used in a VS Code cell.
+# __file__ exist in script mode. Path.cwd() is used when we execute a VS Code cell.
 BASE_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DEFAULT_BOOK = BASE_DIR / "data" / "around_the_world_in_80_days.txt"
 BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
@@ -26,7 +26,7 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_BOOK,
         help=f"UTF-8 text file to stream (default: {DEFAULT_BOOK})",
     )
-    # parse_known_args also works when we run the file cell by cell in VS Code.
+    # parse_known_args work also when we run the file cell by cell in VS Code.
     return parser.parse_known_args()[0]
 
 
@@ -56,7 +56,7 @@ def send_book(book_path: Path) -> None:
 
             while True:
                 try:
-                    # We use the same key for keeping the correct order of the lines.
+                    # We use the same key for keep the good order of the lines.
                     producer.produce(
                         topic=TOPIC,
                         key=book_path.name,

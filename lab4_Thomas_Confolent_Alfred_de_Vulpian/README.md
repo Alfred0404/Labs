@@ -1,8 +1,8 @@
 # Lab 4 — Kafka book streaming
 
-This project implements the producer/topic/consumer pipeline requested in the Kafka overview lab.
+This project make the producer/topic/consumer pipeline asked in the Kafka overview lab.
 
-The producer reads *Around the World in Eighty Days* from Project Gutenberg line by line and sends every line to Kafka. The consumer reads the topic, cleans each line and writes the result to `output/cleaned_book.txt`.
+The producer read *Around the World in Eighty Days* from Project Gutenberg line by line and send each line in Kafka. After, the consumer read the topic, clean the lines and write the result in `output/cleaned_book.txt`.
 
 ## Project structure
 
@@ -47,14 +47,14 @@ python -m pip install -r requirements.txt
 
 ## 3. Start Kafka
 
-Make sure Docker Desktop is running, then start the Kafka broker:
+We need to verify Docker Desktop is started, then we can start the Kafka broker:
 
 ```bash
 docker compose up -d
 docker compose ps
 ```
 
-The compose file uses the `apache/kafka-native:4.1.1` image requested in the lab and exposes Kafka on `localhost:9092`.
+The compose file use the image `apache/kafka-native:4.1.1` asked in the lab. Kafka is available on `localhost:9092`.
 
 ## 4. Create the topic
 
@@ -62,17 +62,17 @@ The compose file uses the `apache/kafka-native:4.1.1` image requested in the lab
 python admin.py
 ```
 
-This creates `gutenberg-book-lines` with one partition and a replication factor of one. Running the script again is safe: it reports that the topic already exists.
+This create `gutenberg-book-lines` with one partition and a replication factor of one. If we launch again, it just say the topic already exist.
 
 ### Run with VS Code cells
 
-The Python files also contain `# %%` cells. Open the `kafka_book_stream` folder directly in VS Code, select the `.venv` Python interpreter and run the cells in this order:
+The Python files contain also `# %%` cells. We open the folder `kafka_book_stream` in VS Code, select the Python `.venv` and run cells in this order:
 
 1. `admin.py`: cells 1, 2 and 3;
 2. `producer.py`: cells 1, 2, 3 and 4;
 3. `consumer.py`: cells 1, 2, 3 and 4.
 
-We run the cells from top to bottom because each part uses variables and functions from the previous part.
+We run cells from top to bottom because every part need variables and functions created before.
 
 ## 5. Send the book
 
@@ -80,7 +80,7 @@ We run the cells from top to bottom because each part uses variables and functio
 python producer.py
 ```
 
-The producer sends the 8,312 lines of the book, including empty lines, followed by an end-of-book marker.
+The producer send the 8,312 lines of the book, also the empty lines. At the end it send a marker to say the book is finished.
 
 ## 6. Consume and clean the text
 
@@ -88,7 +88,7 @@ The producer sends the 8,312 lines of the book, including empty lines, followed 
 python consumer.py
 ```
 
-The consumer:
+The consumer do these steps:
 
 1. reads the records from the beginning of the topic;
 2. converts text to lowercase;
@@ -96,7 +96,7 @@ The consumer:
 4. skips lines that become empty;
 5. writes the result to `output/cleaned_book.txt`.
 
-To replay the topic, use a new consumer group:
+For read again the topic, we use a new consumer group:
 
 ```bash
 python consumer.py --group-id book-cleaner-run-2
@@ -118,7 +118,7 @@ head -n 20 output/cleaned_book.txt
 wc -l output/cleaned_book.txt
 ```
 
-The expected output contains 6,427 non-empty cleaned lines.
+Normally the output have 6,427 cleaned lines who are not empty.
 
 ## 8. Run the cleaning tests
 
@@ -134,7 +134,7 @@ docker compose down
 
 ## Configuration
 
-The scripts use these optional environment variables:
+The scripts can use these optional environment variables:
 
 - `KAFKA_BOOTSTRAP_SERVERS` (default: `localhost:9092`)
 - `KAFKA_TOPIC` (default: `gutenberg-book-lines`)
