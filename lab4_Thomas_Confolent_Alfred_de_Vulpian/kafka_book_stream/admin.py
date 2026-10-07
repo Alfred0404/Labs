@@ -14,7 +14,7 @@ TOPIC = os.getenv("KAFKA_TOPIC", "gutenberg-book-lines")
 # %% 2 - Function to create the topic
 def create_topic() -> None:
     """Create our topic and show all topics."""
-    # We connect to Kafka on the local Docker container.
+    # We connect to Kafka who is in the local Docker container.
     admin = AdminClient(
         {
             "bootstrap.servers": BOOTSTRAP_SERVERS,
@@ -22,7 +22,7 @@ def create_topic() -> None:
         }
     )
     futures = admin.create_topics(
-        # One partition is enough and it keeps the book lines in order.
+        # One partition is enough and like this the book lines stay in order.
         [NewTopic(TOPIC, num_partitions=1, replication_factor=1)]
     )
 

@@ -10,7 +10,7 @@ from confluent_kafka import Consumer, KafkaError
 from text_cleaning import clean_line
 
 
-# __file__ exists in script mode. Path.cwd() is used in a VS Code cell.
+# __file__ exist in script mode. Path.cwd() is used when we execute a VS Code cell.
 BASE_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 DEFAULT_OUTPUT = BASE_DIR / "output" / "cleaned_book.txt"
 BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
@@ -38,14 +38,14 @@ def parse_args() -> argparse.Namespace:
         default=15,
         help="Stop after this many one-second polls without a message.",
     )
-    # parse_known_args also works when we run the file cell by cell in VS Code.
+    # parse_known_args work also when we run the file cell by cell in VS Code.
     return parser.parse_known_args()[0]
 
 
 # %% 3 - Function to receive and clean the book
 def consume_book(output_path: Path, group_id: str, max_idle_polls: int) -> None:
     """Read all messages until we receive the end marker."""
-    # Earliest means we start at the beginning for a new consumer group.
+    # Earliest mean we start at the beginning when it is a new consumer group.
     consumer = Consumer(
         {
             "bootstrap.servers": BOOTSTRAP_SERVERS,
@@ -85,7 +85,7 @@ def consume_book(output_path: Path, group_id: str, max_idle_polls: int) -> None:
                     break
 
                 received += 1
-                # We clean every received line before writing it in the result file.
+                # We clean each received line before to write it in the result file.
                 cleaned = clean_line(value)
                 if cleaned:
                     output.write(cleaned + "\n")
